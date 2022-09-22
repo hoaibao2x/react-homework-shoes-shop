@@ -1,0 +1,42 @@
+.table .td__item {
+    vertical-align: middle;
+}
+
+.row .shoe__item {
+    background-color: rgba(255, 255, 255, .5);
+    transform: translateY(0);
+    transition: all .5s;
+}
+
+.row .shoe__item:hover {
+    transform: translateY(-15px);
+    box-shadow: 0px 15px 35px -4px rgba(150, 150, 150, 0.24);
+}
+
+.shoe__item .card-img-top {
+    transform: scale(1);
+    transition: all .5s;
+}
+
+.row .shoe__item:hover .card-img-top {
+    transform: scale(1.05);
+}
+
+.shoe__item .btn__add__cart {
+    background-image: linear-gradient(to right, #314755 0%, #26a0da 51%, #314755 100%);
+    padding: 8px 15px;
+    text-align: center;
+    text-transform: uppercase;
+    transition: 0.5s;
+    background-size: 200% auto;
+    color: white;
+    box-shadow: 0 0 20px #eee;
+    border-radius: 10px;
+    display: block;
+}
+
+.shoe__item .btn__add__cart:hover {
+    background-position: right center;
+    color: #fff;
+    text-decoration: none;
+}
