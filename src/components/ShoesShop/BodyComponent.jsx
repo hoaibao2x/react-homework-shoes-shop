@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import ModalComponent from './BodyComponent/ModalComponent'
+import ShoeListComponent from './BodyComponent/ShoeListComponent'
 import './BodyStyling/BodyStyling.css'
 
 export default class BodyComponent extends Component {
@@ -127,149 +129,55 @@ export default class BodyComponent extends Component {
     ]
 
     state = {
-        myCart: []
+        myDetail: {}
     }
 
-    renderShoesList = () => {
-        return this.shoesList.map((shoe) => {
-            let { id, image, name, price } = shoe;
-            return <div className="col-md-4" key={`shoe-${id}`}>
-                <div className="card shoe__item" style={{width: '350px', marginTop: '30px'}}>
-                    <img className="card-img-top mx-auto" style={{width: '85%'}} src={image} alt="" />
-                    <div className="card-body text-left">
-                        <h4 className="card-title" style={{fontSize: '22px'}}>{name}</h4>
-                        <p className="card-text text-danger" style={{fontSize: '18px'}}>{`$${price}`}</p>
-                        <button onClick={() => {
-                            this.addToCart(shoe)
-                        }} data-toggle="modal" data-target="#exampleModal" className='btn btn__add__cart'>Add to cart <i className='bi bi-cart4'></i></button>
+    shoeClick = (idClick) => {
+        let checkIndex = this.shoesList.findIndex((shoeInList) => {
+            return idClick === shoeInList.id;
+        })
+        if (checkIndex !== -1) {
+            this.setState({
+                myDetail: this.shoesList[checkIndex]
+            })
+        }
+    }
+
+    renderDetail = () => {
+        let { image, name, shortDescription, quantity, price } = this.state.myDetail;
+        return <div className='row mx-auto container'>
+            <div className="col-md-4">
+                <img className='img-fluid detail__img' src={image} alt="" />
+            </div>
+            <div className="col-md-8 py-3 text-left">
+                <div className="shoe__detail">
+                    <h4 className='detail__name'>Name: {name}</h4>
+                    <p className='detail__desc'>
+                        <span className='desc__title style__bold'> Description: </span>
+                        {shortDescription}
+                    </p>
+                    <span className='detail__quantity'>
+                        <span className='style__bold'>Quantity:</span> {quantity}
+                    </span>
+                    <br />
+                    <span className='detail__price'>
+                        <span className='style__bold'>Price: </span>${price}
+                    </span>
+                    <div className="shoe__action">
+                        <button className='btn action__add__item'>Add to cart <i className="bi bi-cart4" />
+                        </button>
                     </div>
                 </div>
             </div>
-        })
-    }
-
-    renderCart = () => {
-        return this.state.myCart.map((shoe) => {
-            let { id, image, name, price, soLuong } = shoe;
-            return <tr key={`cart-${id}`}>
-                <td className='td__item'>{`SHOE-0${id}`}</td>
-                <td>
-                    <img style={{ 'width': '70px' }} src={image} alt="" />
-                </td>
-                <td className='td__item'>{name}</td>
-                <td className='td__item'>
-                    <button onClick={() => {
-                        this.changeQuantity(id, 1)
-                    }} className='btn btn-success'>+</button>
-                    <span style={{margin: '0 10px'}}>{soLuong}</span>
-                    <button onClick={() => {
-                        this.changeQuantity(id, -1)
-                    }} className='btn btn-secondary'>-</button>
-                </td>
-                <td className='td__item'>{`$${price}`}</td>
-                <td className='td__item'>{`$${(price * soLuong).toLocaleString() }`}</td>
-                <td className='td__item'>
-                    <button onClick={() => {
-                        this.removeItem(id)
-                    }} className='btn btn-danger'><i className="bi bi-trash3"></i></button>
-                </td>
-            </tr>
-        })
-    }
-
-    addToCart = (shoeClick) => {
-        let cartUpdate = [...this.state.myCart];
-        let shoeFind = this.state.myCart.find((shoeInCart) => {
-            return shoeClick.id === shoeInCart.id;
-        })
-
-        if (shoeFind) {
-            shoeFind.soLuong = shoeFind.soLuong + 1;
-        } else {
-            let newShoe = { ...shoeClick, soLuong: 1 };
-            cartUpdate.push(newShoe);
-        }
-        this.setState({
-            myCart: cartUpdate
-        })
-    }
-
-    removeItem = (idRemove) => {
-        let cartUpdate = [...this.state.myCart];
-        let idCheck = cartUpdate.findIndex((shoeInCart) => {
-            return shoeInCart.id === idRemove; 
-        })
-
-        if (idCheck !== -1) {
-            cartUpdate.splice(idCheck, 1);
-        }
-
-        this.setState({
-            myCart: cartUpdate
-        })
-    }
-
-    changeQuantity = (shoeID, quantity) => {
-        let cartUpdate = [...this.state.myCart];
-        let shoeFind = cartUpdate.find((shoeInCart) => {
-            return shoeInCart.id === shoeID;
-        })
-
-        if (shoeFind) {
-            shoeFind.soLuong = shoeFind.soLuong + quantity;
-
-            if (shoeFind.soLuong < 1) {
-                alert('Minimum item must greater than or equal to 1 !');
-                shoeFind.soLuong -= quantity;
-            }
-        }
-
-        this.setState({
-            myCart: cartUpdate
-        })
+        </div>
     }
 
     render() {
         return (
             <div className="body__content">
                 <h2 className='text-white mt-2'>Shoe Shop</h2>
-                <div className="row">
-                    {this.renderShoesList()}
-                </div>
-
-                <div>
-                    <div className="modal fade" id="exampleModal" tabIndex={-1} aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div className="modal-dialog modal-xl modal-dialog-scrollable">
-                            <div className="modal-content">
-                                <div className="modal-header">
-                                    <h5 className="modal-title" id="exampleModalLabel">Shoe Cart</h5>
-                                    <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">×</span>
-                                    </button>
-                                </div>
-                                <div className="modal-body">
-                                    <table className="table">
-                                        <thead className='bg-dark text-white'>
-                                            <tr>
-                                                <th>Mã</th>
-                                                <th>Hình ảnh</th>
-                                                <th>Tên</th>
-                                                <th>Số lượng</th>
-                                                <th>Đơn giá</th>
-                                                <th>Thành tiền</th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {this.renderCart()}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
+                <ShoeListComponent shoesList={this.shoesList} shoeClick={this.shoeClick} />
+                <ModalComponent myDetail={this.state.myDetail} renderDetail={this.renderDetail} />
             </div>
         )
     }

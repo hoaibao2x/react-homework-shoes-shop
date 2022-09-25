@@ -1,7 +1,3 @@
-.table .td__item {
-    vertical-align: middle;
-}
-
 .row .shoe__item {
     background-color: rgba(255, 255, 255, .5);
     transform: translateY(0);
@@ -23,7 +19,7 @@
 }
 
 .shoe__item .btn__add__cart {
-    background-image: linear-gradient(to right, #314755 0%, #26a0da 51%, #314755 100%);
+    background-image: linear-gradient(to right, #000000 0%, #e74c3c 51%, #000000 100%);
     padding: 8px 15px;
     text-align: center;
     text-transform: uppercase;
@@ -36,6 +32,44 @@
 }
 
 .shoe__item .btn__add__cart:hover {
+    background-position: right center;
+    color: #fff;
+    text-decoration: none;
+}
+
+.shoe__detail {
+    padding: 0 30px;
+}
+
+.shoe__detail .style__bold {
+    font-weight: 700;
+}
+
+.shoe__detail .detail__quantity,
+.shoe__detail .detail__price,
+.shoe__detail .detail__desc {
+    font-size: 17px;
+}
+
+.shoe__detail .detail__price {
+    display: block;
+    margin: 10px 0;
+}
+
+.shoe__action .action__add__item {
+    background-image: linear-gradient(to right, #314755 0%, #26a0da 51%, #314755 100%);
+    padding: 8px 15px;
+    text-align: center;
+    text-transform: uppercase;
+    transition: 0.5s;
+    background-size: 200% auto;
+    color: white;
+    box-shadow: 0 0 20px #eee;
+    border-radius: 10px;
+    display: block;
+}
+
+.shoe__action .action__add__item:hover {
     background-position: right center;
     color: #fff;
     text-decoration: none;
